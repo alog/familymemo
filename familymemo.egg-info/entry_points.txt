@@ -1,5 +1,0 @@
-      [paste.app_factory]
-      main = familymemo:main
-      [console_scripts]
-      initialize_familymemo_db = familymemo.scripts.initializedb:main
-      
