@@ -1,0 +1,57 @@
+ 
+ 
+
+.button {
+  font-size: 14px;
+  font-weight: bold;
+  width: auto;
+  background: #eeeeee;
+  padding: 5px 20px 5px 20px;
+  border: 1px solid #bbbbbb;
+  border-left: none;
+  border-right: none;
+}
+
+#flash, #notfound {
+  font-size: 16px;
+  width: 500px;
+  text-align: center;
+  background-color: #e1ecfe;
+  border-top: 2px solid #7a9eec;
+  border-bottom: 2px solid #7a9eec;
+  padding: 10px 20px 10px 20px;
+}
+
+#notfound {
+  background-color: #fbe3e4;
+  border-top: 2px solid #fbc2c4;
+  border-bottom: 2px solid #fbc2c4;
+  padding: 0 20px 30px 20px;
+}
+
+#tasks {
+  width: 680px;
+}
+
+#tasks li {
+  
+ 
+  border-bottom: 1px solid #bbbbbb;
+}
+
+#tasks li.last {
+  text-align: right;
+  font-weight:bold;
+  border-bottom: none;
+}
+
+#tasks .name {
+  width: 540px;
+  text-align: left;
+  display: inline-block;
+}
+
+#tasks .actions {
+  text-align: right;
+  display: inline-block;
+}
