@@ -44,5 +44,7 @@ def main(global_config, **settings):
     config.add_route('update', '/update/{id}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('backup', '/backup')
+    config.add_route('restore', '/restore')
     config.scan()
     return config.make_wsgi_app()

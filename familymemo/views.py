@@ -142,8 +142,17 @@ def logout(request):
     return HTTPFound(location = request.route_url('list'),
                      headers = headers)
 
-
-
+@view_config(route_name='backup')
+def backup(request):
+    request.session.flash('backup executed')
+    return HTTPFound(location = request.route_url('list'))
+    
+                     
+@view_config(route_name='restore')
+def restore(request):
+    request.session.flash('restore executed') 
+    return HTTPFound(location = request.route_url('list'))
+    
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
