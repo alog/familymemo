@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*- 
 # to control the access
 
-USERS = {'alog':'alog',
-          'viewer':'viewer'}
-GROUPS = {'alog':['group:editors']}
+USERS = {'demo':'demo',
+          'admin':'admin'}
+GROUPS = {'admin':['group:editors']}
 
 def groupfinder(userid, request):
     if userid in USERS:

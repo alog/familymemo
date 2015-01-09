@@ -46,17 +46,15 @@
         </div>
 		 
 	</div>
+    <hr>
 	<div class="row">
 		<div class="col-xs-4">
-			<h2>Backup</h2>
-			<p>Backup your current memo to a file.</p>
-             
 			<p><a href="${request.route_url('backup')}"  class="btn btn-success">Backup</a></p>
+            <p>Backup your current memo to a file.</p>
 		</div>
 		<div class="col-xs-4">
-			<h2>Restore</h2>
-			<p>Restore your memo from backup file.</p>
 			<p><a href="${request.route_url('restore')}"   class="btn btn-success">Restore</a></p>
+			<p>Restore your memo from backup file.</p>
 		</div>
  
 	</div>

@@ -59,7 +59,7 @@ def new_view(request):
                 [request.POST['content'], 0])
             #避免SQL注入漏洞，注意要使用问号生成SQL声明语句
             '''
-            new_task = Task(content=request.POST['content'], owner='alog',status=0)
+            new_task = Task(content=request.POST['content'], owner=request.authenticated_userid,status=0)
             DBSession.add(new_task)
             
             request.session.flash('New task was successfully added!')
@@ -117,7 +117,8 @@ def login(request):
         if ( request.POST.get('button') == "Log In"):
             login = request.params['login']
             password = request.params['password']
-            if USERS.get(login) == 'alog':
+            # no user database function yet, just pass it.
+            if USERS.get(login) == 'admin':
                 #登录成功
                 headers = remember(request, login)
                 return HTTPFound(location = came_from, headers = headers)
@@ -144,6 +145,12 @@ def logout(request):
 
 @view_config(route_name='backup')
 def backup(request):
+    rs=Task.all();    
+
+    
+    for task in rs:
+        print(task.row2dict())
+        request.session.flash(task.row2dict())
     request.session.flash('backup executed')
     return HTTPFound(location = request.route_url('list'))
     
@@ -168,5 +175,3 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
-
-# a update from office.!

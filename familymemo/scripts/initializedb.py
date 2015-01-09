@@ -42,8 +42,10 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = User(login_name=u'alog', nickname=u'alog-developer',password=u'gola')
+        model = User(login_name=u'demo', nickname=u'demo user',password=u'demo')
+        DBSession.add(model)
+        model = User(login_name=u'admin', nickname=u'app-developer',password=u'manager')
         DBSession.add(model)
     with transaction.manager:
-        model = Task(content='Demo Task', owner=u'alog',status=0)
+        model = Task(content='Demo entry 1', owner=u'demo',status=0)
         DBSession.add(model)

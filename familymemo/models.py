@@ -64,6 +64,23 @@ class Task(Base):
     edited = Column(DateTime, default=datetime.datetime.utcnow)
     def __repr__(self):
         return('Taskid:%r, content:%r'%(self.id, self.content))
+    def as_dict(self):
+        # convert the task object to json, but datetime will be 'edited': datetime.datetime(2015, 1, 9, 2, 32, 32, 379098)
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    def row2dict(row):
+        # convert the task object to json, but datetime will be 'edited': '2015-01-09 02:11:03.835397'
+        d = {}
+        for column in row.__table__.columns:
+            d[column.name] = str(getattr(row, column.name))
+        return d   
+        
+    @classmethod
+    def all(cls):
+        return DBSession.query(Task).all()
+    @classmethod
+    def all_active_task(cls):
+        return DBSession.query(Task).filter(Task.status==0).all()
+
     def brief_content(self):
         # 笨重的算法， 处理在首页显示开头若干长度的字符串，以适应列表的宽度
         # 因为英文显示所需的宽度小于 中文字符的宽度（约一半）
@@ -83,10 +100,4 @@ class Task(Base):
                 break
         return self.content[:char_count]+'...'        
     
-    @classmethod
-    def all(cls):
-        return DBSession.query(Task).all()
-    @classmethod
-    def all_active_task(cls):
-        return DBSession.query(Task).filter(Task.status==0).all()
 
