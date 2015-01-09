@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
-<%inherit file="layout.mako"/>
+<%inherit file="mainlayout.mako"/>
 
-<h1>Please login</h1>
+<h3>Please login</h3>
 			
 <form action="${url}" method="post">
   

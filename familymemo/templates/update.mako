@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-<%inherit file="layout.mako"/>
+<%inherit file="mainlayout.mako"/>
 
 <h2>Edit task</h2>
 			
