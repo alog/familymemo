@@ -59,7 +59,7 @@ class Task(Base):
     __tablename__ = 'tasks'
     id = Column(Integer, primary_key=True)
     content = Column(String)
-    owner = Column(Integer, ForeignKey('users.id'))
+    owner = Column(Integer, ForeignKey('users.id'))  #这里不明白， 整数型， 怎么可以填入字符串?
     status = Column(Integer) 
     edited = Column(DateTime, default=datetime.datetime.utcnow)
     def __repr__(self):
@@ -77,6 +77,7 @@ class Task(Base):
     @classmethod
     def all(cls):
         return DBSession.query(Task).all()
+  
     @classmethod
     def all_active_task(cls):
         return DBSession.query(Task).filter(Task.status==0).all()

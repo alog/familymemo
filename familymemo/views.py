@@ -3,7 +3,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
-
+import datetime
 from .models import (
     DBSession,
     Task,
@@ -143,19 +143,22 @@ def logout(request):
     return HTTPFound(location = request.route_url('list'),
                      headers = headers)
 
-@view_config(route_name='backup')
+@view_config(route_name='backup',permission='edit')
 def backup(request):
-    rs=Task.all();    
-
+    rs=Task.all()  
+    filename=datetime.datetime.now().strftime("%b%d%H%M%S")+'.backup'
+    f=open(filename,'w')
+    
     
     for task in rs:
         print(task.row2dict())
+        print(task.row2dict(),file=f)  #write to bakcup file
         request.session.flash(task.row2dict())
-    request.session.flash('backup executed')
+    request.session.flash('backup executed, filename : '+filename)
     return HTTPFound(location = request.route_url('list'))
     
                      
-@view_config(route_name='restore')
+@view_config(route_name='restore',permission='edit')
 def restore(request):
     request.session.flash('restore executed') 
     return HTTPFound(location = request.route_url('list'))
