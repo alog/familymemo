@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*- 
-from pyramid.response import Response
+from pyramid.response import (Response , FileResponse)
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
 import datetime
+import os
+from tempfile import NamedTemporaryFile
+
 from .models import (
     DBSession,
     Task,
@@ -145,24 +148,50 @@ def logout(request):
 
 @view_config(route_name='backup',permission='edit')
 def backup(request):
+
+    # 理想的做法是 在内存中生成内容，直接提供下载，避免生成中间文件
+    # 尝试使用StringIO 可是不成功
+    # 这里使用NamedTemporaryFile()生成的中间文件， 事后自动删除。
+    #  
+    #  
     rs=Task.all()  
-    filename=datetime.datetime.now().strftime("%b%d%H%M%S")+'.backup'
-    f=open(filename,'w')
-    
-    
+    name_suggested='task_'+datetime.datetime.now().strftime("%b%d%H%M")+'.json'
+    tf = NamedTemporaryFile(prefix='abc'  , suffix='.gb', delete=True)
+    print(os.path.abspath(tf.name))
+    print('--------------------------')
     for task in rs:
-        print(task.row2dict())
-        print(task.row2dict(),file=f)  #write to bakcup file
-        request.session.flash(task.row2dict())
-    request.session.flash('backup executed, filename : '+filename)
-    return HTTPFound(location = request.route_url('list'))
+            line=str(task.row2dict()) + '\n'
+            tf.write( bytes( line, 'UTF-8'))
+    tf.seek(0)
+    response = Response(content_type='text/plain')
+    response.app_iter = tf
+    response.headers['Content-Disposition'] = ("attachment; filename=%s" %name_suggested)
+    return response   
     
-                     
+@view_config(route_name='restore',permission='edit'  )
+def restore(request):
+    rs=Task.all()  
+    name_suggested='task_'+datetime.datetime.now().strftime("%b%d%H%M")+'.json'
+    tf = NamedTemporaryFile(prefix='abc'  , suffix='.gb', delete=True)
+    print(os.path.abspath(tf.name))
+    print('--------------------------')
+    for task in rs:
+            line=str(task.row2dict()) + '\n'
+            tf.write( bytes( line, 'UTF-8'))
+    tf.seek(0)
+    response = Response(content_type='text/plain')
+    response.app_iter = tf
+    response.headers['Content-Disposition'] = ("attachment; filename=%s" %name_suggested)
+    return response
+'''                     
 @view_config(route_name='restore',permission='edit')
 def restore(request):
     request.session.flash('restore executed') 
     return HTTPFound(location = request.route_url('list'))
-    
+'''
+
+
+
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
